@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title id="page-title">Google Drive</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Roboto,Arial,sans-serif;background:#f8f9fa;min-height:100vh;display:flex;flex-direction:column}
+header{background:#fff;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;padding:0 24px;height:64px;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo-text{font-family:"Google Sans",sans-serif;font-size:22px;color:#5f6368;font-weight:400}
+.logo-text span{color:#1a73e8}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.gp{height:3px;background:#e8eaed}
+.gpf{height:100%;background:#1a73e8;transition:width .6s ease}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 14px rgba(0,0,0,.13);width:100%;max-width:500px;overflow:hidden}
+.chb{background:#1a73e8;padding:20px 28px 16px;display:flex;align-items:center;gap:14px}
+.chb.green{background:#34a853}
+.chi h2{font-family:"Google Sans",sans-serif;font-size:17px;color:#fff;font-weight:500}
+.chi p{font-size:12px;color:rgba(255,255,255,.8);margin-top:3px}
+.cb{padding:28px}
+.tag{display:inline-block;background:#e8f0fe;color:#1a73e8;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-bottom:14px}
+.tag.g{background:#e6f4ea;color:#137333}
+.it{font-size:14px;color:#3c4043;line-height:1.65;margin-bottom:20px}
+.btn{display:block;width:100%;margin-top:20px;padding:14px;background:#1a73e8;color:#fff;border:none;border-radius:6px;font-size:15px;font-family:"Google Sans",sans-serif;font-weight:500;cursor:pointer;transition:background .2s}
+.btn:hover:not(:disabled){background:#1558d6}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.g{background:#34a853}
+.btn.g:hover:not(:disabled){background:#2d9249}
+.sn{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 14px;background:#f8f9fa;border-radius:6px;font-size:12px;color:#5f6368;border:1px solid #e8eaed}
+.tb{display:inline-flex;align-items:center;gap:5px;background:#fce8e6;color:#d93025;font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;float:right}
+.ptb{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.ptb th{background:#f8f9fa;padding:8px 12px;text-align:left;color:#5f6368;font-weight:500;border-bottom:1px solid #e0e0e0}
+.ptb td{padding:10px 12px;border-bottom:1px solid #f1f3f4;color:#3c4043}
+.ptb td:last-child{text-align:right}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:500}
+.bg{background:#e6f4ea;color:#137333}
+.by{background:#fef7e0;color:#b06000}
+.br{background:#fce8e6;color:#c5221f}
+.ib{background:#e8f0fe;border-left:4px solid #1a73e8;padding:10px 14px;border-radius:0 6px 6px 0;font-size:13px;color:#1558d6;margin:12px 0}
+.ib.g{background:#e6f4ea;border-color:#34a853;color:#137333}
+/* captcha */
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:16px 0;border:1px solid #dadce0;padding:4px;border-radius:4px}
+.cc{position:relative;cursor:pointer;border-radius:2px;aspect-ratio:1;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:32px;user-select:none}
+.cc.sel{outline:3px solid #1a73e8;outline-offset:-3px}
+.cc .ck{position:absolute;top:4px;left:4px;width:20px;height:20px;background:#1a73e8;border-radius:3px;display:none;align-items:center;justify-content:center;color:#fff;font-size:12px}
+.cc.sel .ck{display:flex}
+.ch{background:#f8f9fa;border-radius:4px 4px 0 0;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border:1px solid #dadce0;border-bottom:none;font-size:13px;font-weight:500;color:#202124}
+/* type */
+.tp{background:#f8f9fa;border-radius:6px;padding:10px 16px;font-size:20px;font-weight:700;letter-spacing:8px;color:#202124;text-align:center;margin:12px 0;border:1px solid #e8eaed;font-family:monospace;user-select:none}
+/* checklist */
+.cl{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.cl li label{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#3c4043;cursor:pointer;line-height:1.5}
+.cl li input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:#1a73e8;flex-shrink:0;cursor:pointer}
+/* slider */
+.sl-lbl{font-size:13px;color:#5f6368;display:block;margin-bottom:10px}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#e0e0e0;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#1a73e8;cursor:pointer}
+.sv{text-align:center;font-size:22px;font-weight:700;color:#1a73e8;margin-top:8px}
+/* radio */
+.rg{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.rg label{display:flex;align-items:center;gap:10px;font-size:14px;color:#3c4043;cursor:pointer;padding:10px 14px;border:1px solid #dadce0;border-radius:6px;transition:border-color .2s}
+.rg label:hover{border-color:#1a73e8;background:#f8fbff}
+.rg input[type=radio]{accent-color:#1a73e8;width:16px;height:16px;flex-shrink:0}
+/* spinner */
+.sw{display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:16px}
+.sp{width:48px;height:48px;border:4px solid #e8eaed;border-top-color:#1a73e8;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pb{margin:10px 0;background:#e8eaed;border-radius:4px;height:5px;overflow:hidden}
+.pbf{height:100%;background:#1a73e8;border-radius:4px;transition:width .4s ease}
+.em{color:#d93025;font-size:12px;margin-top:6px;display:none}
+.ig{margin-bottom:14px}
+.ig label{display:block;font-size:12px;color:#5f6368;margin-bottom:5px;font-weight:500}
+.ig input{width:100%;padding:12px 14px;border:1px solid #dadce0;border-radius:6px;font-size:14px;font-family:Roboto,sans-serif;color:#202124;outline:none;transition:border .2s}
+.ig input:focus{border-color:#1a73e8;box-shadow:0 0 0 2px rgba(26,115,232,.15)}
+/* final */
+#fs{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;background:#fff;padding:40px 20px;text-align:center}
+.fe{font-size:90px;margin-bottom:24px;animation:bounce .9s infinite alternate}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.fm{font-family:"Google Sans",sans-serif;font-size:30px;font-weight:700;color:#d93025;line-height:1.45;max-width:540px}
+.fsb{margin-top:16px;font-size:16px;color:#5f6368}
+</style>
+</head>
+<body>
+<div id="mw">
+<header>
+  <a class="logo" href="#">
+    <svg width="40" height="40" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+      <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+      <path d="M43.65 25 29.9 1.2c-1.35.8-2.5 1.9-3.3 3.3l-25.1 43.5H27.4z" fill="#00ac47"/>
+      <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.3z" fill="#ea4335"/>
+      <path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+      <path d="M60.3 53H27.4L13.65 76.8c1.35.8 2.9 1.2 4.5 1.2h50c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+      <path d="M73.4 26.5l-12.55-21.7c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.65 28H86.8c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+    </svg>
+    <span class="logo-text">Google <span>Drive</span></span>
+  </a>
+  <div class="header-right">
+    <span style="font-size:13px;color:#5f6368">seguranca.google.com</span>
+  </div>
+</header>
+<div class="gp"><div class="gpf" id="gf" style="width:0%"></div></div>
+<main>
+<div class="card">
+
+<!-- S0 -->
+<div id="s0">
+<div class="chb">
+  <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z" fill="rgba(255,255,255,0.9)"/></svg>
+  <div class="chi"><h2>Salva P3 &#8212; Acesso Restrito</h2><p>drive.google.com &bull; Verificacao necessaria</p></div>
+</div>
+<div class="cb">
+  <span class="tag">Inicio</span>
+  <span class="tb">&#9201; <span id="timer">09:59</span></span>
+  <p class="it">Uma pasta foi compartilhada com voce pelo Google Workspace. Para acessar os arquivos, voce precisara passar por um processo de verificacao de seguranca de <strong>7 etapas</strong>.</p>
+  <table class="ptb">
+    <tr><th>Detalhe</th><th>Valor</th></tr>
+    <tr><td>&#128193; Pasta</td><td><strong>Salva P3</strong></td></tr>
+    <tr><td>&#128100; Dono</td><td><strong>admin@workspace.com</strong></td></tr>
+    <tr><td>&#128230; Tamanho</td><td><strong>2.3 GB (47 arquivos)</strong></td></tr>
+    <tr><td>&#128274; Acesso</td><td><span class="badge by">Restrito</span></td></tr>
+    <tr><td>&#9989; Status</td><td><span class="badge bg">Link ativo</span></td></tr>
+  </table>
+  <div class="ib">&#128737; Por seguranca, o acesso exige verificacao de identidade em 7 etapas.</div>
+  <button class="btn" onclick="go(1)">Iniciar Verificacao de Seguranca</button>
+  <div class="sn">&#128272; Protegido por SSL. Conexao criptografada de 256 bits.</div>
+</div>
+</div>
+
+<!-- S1: CAPTCHA -->
+<div id="s1" style="display:none">
+<div class="chb"><div class="chi"><h2>Verificacao Humana (reCAPTCHA)</h2><p>Etapa 1 de 7 &#8212; Confirmacao de Identidade</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 1 / 7</span>
+  <p class="it">Selecione todas as imagens que contem <strong>semaforos</strong>. Clique em todas as corretas antes de continuar.</p>
+  <div class="ch"><span>Selecione todas as imagens com semaforos</span><span style="color:#5f6368;font-size:12px">&#128260; Atualizar</span></div>
+  <div class="cgrid">
+    <div class="cc" onclick="tc(this)" data-c="1"><div class="ck">&#10003;</div>&#128678;</div>
+    <div class="cc" onclick="tc(this)" data-c="0"><div class="ck">&#10003;</div>&#128663;</div>
+    <div class="cc" onclick="tc(this)" data-c="1"><div class="ck">&#10003;</div>&#128678;</div>
+    <div class="cc" onclick="tc(this)" data-c="0"><div class="ck">&#10003;</div>&#127795;</div>
+    <div class="cc" onclick="tc(this)" data-c="0"><div class="ck">&#10003;</div>&#127968;</div>
+    <div class="cc" onclick="tc(this)" data-c="1"><div class="ck">&#10003;</div>&#128678;</div>
+    <div class="cc" onclick="tc(this)" data-c="0"><div class="ck">&#10003;</div>&#128652;</div>
+    <div class="cc" onclick="tc(this)" data-c="1"><div class="ck">&#10003;</div>&#128678;</div>
+    <div class="cc" onclick="tc(this)" data-c="0"><div class="ck">&#10003;</div>&#9962;</div>
+  </div>
+  <p id="e1" class="em">&#10060; Selecao incorreta. Selecione APENAS os semaforos e tente novamente.</p>
+  <button class="btn" onclick="vCap()">Verificar</button>
+  <div class="sn">&#128272; Protegido por reCAPTCHA v3 &#8212; Google Privacy Policy</div>
+</div>
+</div>
+
+<!-- S2: DIGITAR PALAVRA -->
+<div id="s2" style="display:none">
+<div class="chb"><div class="chi"><h2>Confirmacao de Leitura</h2><p>Etapa 2 de 7 &#8212; Termos de Acesso</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 2 / 7</span>
+  <p class="it">Para confirmar que voce leu e concorda com os termos de acesso a pasta <strong>Salva P3</strong>, digite a palavra exibida abaixo:</p>
+  <div class="tp" id="tw">AUTORIZADO</div>
+  <div class="ig" style="margin-top:14px"><label>Digite a palavra acima</label><input type="text" id="ti" placeholder="Digite aqui..." autocomplete="off" style="text-transform:uppercase;letter-spacing:4px;font-weight:700"></div>
+  <p id="e2" class="em">&#10060; Palavra incorreta. Digite exatamente como mostrado.</p>
+  <button class="btn" onclick="vType()">Confirmar</button>
+</div>
+</div>
+
+<!-- S3: CHECKBOXES -->
+<div id="s3" style="display:none">
+<div class="chb"><div class="chi"><h2>Termos e Condicoes de Acesso</h2><p>Etapa 3 de 7 &#8212; Conformidade Legal</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 3 / 7</span>
+  <p class="it">Antes de acessar os arquivos da pasta <strong>Salva P3</strong>, leia e aceite todos os termos abaixo.</p>
+  <ul class="cl">
+    <li><label><input type="checkbox" id="t1"><span>Concordo com os Termos de Uso do Google Workspace e com a Politica de Privacidade.</span></label></li>
+    <li><label><input type="checkbox" id="t2"><span>Confirmo que nao irei compartilhar o conteudo desta pasta com terceiros nao autorizados.</span></label></li>
+    <li><label><input type="checkbox" id="t3"><span>Estou ciente de que todas as minhas acoes dentro desta pasta serao registradas e monitoradas.</span></label></li>
+    <li><label><input type="checkbox" id="t4"><span>Concordo em nao realizar downloads em massa ou uso automatizado dos arquivos.</span></label></li>
+  </ul>
+  <p id="e3" class="em">&#10060; Voce precisa aceitar todos os termos para continuar.</p>
+  <button class="btn" onclick="vTos()">Aceitar e Continuar</button>
+  <div class="sn">&#128203; Um registro de auditoria sera criado com seu IP e horario de acesso.</div>
+</div>
+</div>
+
+<!-- S4: SLIDER -->
+<div id="s4" style="display:none">
+<div class="chb"><div class="chi"><h2>Autorizar Nivel de Acesso</h2><p>Etapa 4 de 7 &#8212; Configuracao de Permissoes</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 4 / 7</span>
+  <p class="it">Use o controle abaixo para definir o nivel de acesso. Para continuar, o nivel deve estar em <strong>100%</strong>.</p>
+  <div style="margin:16px 0">
+    <label class="sl-lbl">Nivel de Acesso Solicitado</label>
+    <input type="range" min="0" max="100" value="0" id="sl" oninput="uSl(this.value)">
+    <div class="sv" id="slv">0%</div>
+  </div>
+  <table class="ptb">
+    <tr><th>Permissao</th><th>Status</th></tr>
+    <tr><td>Leitura de arquivos</td><td id="p1"><span class="badge br">Bloqueado</span></td></tr>
+    <tr><td>Download</td><td id="p2"><span class="badge br">Bloqueado</span></td></tr>
+    <tr><td>Comentarios</td><td id="p3"><span class="badge br">Bloqueado</span></td></tr>
+    <tr><td>Acesso total</td><td id="p4"><span class="badge br">Bloqueado</span></td></tr>
+  </table>
+  <p id="e4" class="em">&#10060; O nivel de acesso deve ser 100% para continuar.</p>
+  <button class="btn" onclick="vSl()">Confirmar Nivel de Acesso</button>
+</div>
+</div>
+
+<!-- S5: SURVEY -->
+<div id="s5" style="display:none">
+<div class="chb"><div class="chi"><h2>Pesquisa de Satisfacao</h2><p>Etapa 5 de 7 &#8212; Feedback Obrigatorio</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 5 / 7</span>
+  <p class="it">Para melhorarmos nossos servicos, responda a pesquisa abaixo. <strong>Obrigatorio</strong> para liberar o acesso.</p>
+  <p style="font-size:14px;color:#202124;font-weight:500;margin-bottom:8px">Como voce avalia o processo de verificacao ate agora?</p>
+  <div class="rg">
+    <label><input type="radio" name="sv" value="1"><span>&#128546; Muito cansativo e demorado</span></label>
+    <label><input type="radio" name="sv" value="2"><span>&#128528; Razoavel, esperado para seguranca</span></label>
+    <label><input type="radio" name="sv" value="3"><span>&#128578; Bom, mas poderia ser mais rapido</span></label>
+    <label><input type="radio" name="sv" value="4"><span>&#128522; Otimo, me sinto muito seguro</span></label>
+  </div>
+  <p id="e5" class="em">&#10060; Por favor, selecione uma opcao para continuar.</p>
+  <button class="btn" onclick="vSurvey()">Enviar Resposta</button>
+</div>
+</div>
+
+<!-- S6: LOADING -->
+<div id="s6" style="display:none">
+<div class="chb"><div class="chi"><h2>Processando Verificacoes</h2><p>Etapa 6 de 7 &#8212; Validacao Final dos Servidores</p></div></div>
+<div class="cb">
+  <span class="tag">Etapa 6 / 7</span>
+  <p class="it">Aguarde enquanto os servidores do Google validam suas respostas e preparam o acesso seguro a pasta <strong>Salva P3</strong>.</p>
+  <div class="sw"><div class="sp"></div><div style="font-size:14px;color:#5f6368;text-align:center" id="stxt">Conectando aos servidores do Google...</div></div>
+  <div class="pb"><div class="pbf" id="sbar" style="width:0%"></div></div>
+  <p style="font-size:12px;color:#5f6368;text-align:right;margin-top:6px" id="spct">0%</p>
+  <button class="btn" id="s6btn" onclick="go(7)" style="display:none;margin-top:20px">Continuar para Ultima Etapa &#8594;</button>
+  <div class="sn" style="margin-top:20px">&#127760; Validando: IP, dispositivo, sessao e historico de acesso.</div>
+</div>
+</div>
+
+<!-- S7: FINAL CONFIRM -->
+<div id="s7" style="display:none">
+<div class="chb green">
+  <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z" fill="rgba(255,255,255,0.9)"/></svg>
+  <div class="chi"><h2>Verificacao Concluida!</h2><p>Etapa 7 de 7 &#8212; Acesso Liberado</p></div>
+</div>
+<div class="cb">
+  <span class="tag g">Etapa 7 / 7 &#8212; FINAL</span>
+  <p class="it">Todas as verificacoes foram concluidas com sucesso. Sua identidade foi confirmada e o acesso a pasta <strong>Salva P3</strong> foi liberado.</p>
+  <table class="ptb">
+    <tr><td>&#9989; reCAPTCHA</td><td><span class="badge bg">Aprovado</span></td></tr>
+    <tr><td>&#9989; Identidade</td><td><span class="badge bg">Confirmada</span></td></tr>
+    <tr><td>&#9989; Termos</td><td><span class="badge bg">Aceitos</span></td></tr>
+    <tr><td>&#9989; Servidores</td><td><span class="badge bg">Validados</span></td></tr>
+  </table>
+  <div class="ib g">&#127881; Tudo certo! Clique abaixo para abrir a pasta Salva P3.</div>
+  <button class="btn g" onclick="showFinal()">&#128640; Abrir Pasta Salva P3 no Google Drive</button>
+  <div class="sn">&#9989; Acesso verificado e registrado. Token valido por 10 minutos.</div>
+</div>
+</div>
+
+</div><!-- /card -->
+</main>
+</div><!-- /mw -->
+
+<div id="fs">
+  <div class="fe">&#128128;</div>
+  <div class="fm">Pois bem ne 93,<br>o p3 nao era facil?<br>Se salvem agora</div>
+  <div class="fsb">voce passou por 7 etapas so pra chegar aqui kkkkkk &#128128;</div>
+</div>
+
+<script>
+var cur=0,sec=599,pct=[0,15,30,45,60,75,90,100];
+setInterval(function(){if(sec<=0)return;sec--;var m=String(Math.floor(sec/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0"),el=document.getElementById("timer");if(el)el.textContent=m+":"+s},1000);
+function go(n){document.getElementById("s"+cur).style.display="none";document.getElementById("s"+n).style.display="block";cur=n;document.getElementById("gf").style.width=pct[n]+"%";document.getElementById("page-title").textContent="Etapa "+n+" de 7 | Salva P3 - Google Drive";window.scrollTo(0,0);if(n===6)spin()}
+function showFinal(){document.getElementById("mw").style.display="none";document.getElementById("fs").style.display="flex"}
+function tc(el){el.classList.toggle("sel")}
+function vCap(){var cs=document.querySelectorAll(".cc"),ok=true;cs.forEach(function(c){if((c.dataset.c==="1")!==c.classList.contains("sel"))ok=false});if(ok){go(2)}else{document.getElementById("e1").style.display="block";cs.forEach(function(c){c.classList.remove("sel")})}}
+function vType(){var w=document.getElementById("tw").textContent.trim(),t=document.getElementById("ti").value.trim().toUpperCase();if(t===w){go(3)}else{document.getElementById("e2").style.display="block"}}
+function vTos(){if(["t1","t2","t3","t4"].every(function(id){return document.getElementById(id).checked})){go(4)}else{document.getElementById("e3").style.display="block"}}
+function uSl(v){document.getElementById("slv").textContent=v+"%";var n=parseInt(v);document.getElementById("p1").innerHTML=n>=25?"<span class='badge bg'>Liberado</span>":"<span class='badge br'>Bloqueado</span>";document.getElementById("p2").innerHTML=n>=50?"<span class='badge bg'>Liberado</span>":"<span class='badge br'>Bloqueado</span>";document.getElementById("p3").innerHTML=n>=75?"<span class='badge bg'>Liberado</span>":"<span class='badge br'>Bloqueado</span>";document.getElementById("p4").innerHTML=n>=100?"<span class='badge bg'>Liberado</span>":"<span class='badge br'>Bloqueado</span>"}
+function vSl(){if(parseInt(document.getElementById("sl").value)===100){go(5)}else{document.getElementById("e4").style.display="block"}}
+function vSurvey(){if(document.querySelector("input[name=sv]:checked")){go(6)}else{document.getElementById("e5").style.display="block"}}
+function spin(){var msgs=["Conectando aos servidores do Google...","Verificando historico de acesso...","Validando certificado de seguranca...","Analisando permissoes de rede...","Gerando token de sessao seguro...","Checando conformidade com LGPD...","Preparando acesso a pasta Salva P3...","Finalizando verificacoes..."],p=0,mi=0;var iv=setInterval(function(){p+=Math.random()*8+3;if(p>=100){p=100;clearInterval(iv);document.getElementById("s6btn").style.display="block"}document.getElementById("sbar").style.width=Math.min(p,100)+"%";document.getElementById("spct").textContent=Math.floor(Math.min(p,100))+"%";if(mi<msgs.length)document.getElementById("stxt").textContent=msgs[mi++]},700)}
+</script>
+</body>
+</html>
